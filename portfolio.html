@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Game Dev Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Dela+Gothic+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   CSS VARIABLES — edit colors/fonts here
+============================================================ */
+:root {
+  --bg:        #f5ede6;
+  --teal:      #000000;
+  --teal-dark: #000000;
+  --pink:      #f2bfb5;
+  --pink-mid:  #e8998a;
+  --cream:     #faf4ef;
+  --text:      #1a1a1a;
+  --text-muted:#4a4a4a;
+  --white:     #ffffff;
+  --radius:    14px;
+  --shadow:    0 8px 32px rgba(30,107,94,.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--pink);
+  display: flex; align-items: center; gap: 2rem;
+  padding: .75rem 2.5rem;
+  border-bottom: 2px solid var(--pink-mid);
+}
+nav a {
+  font-family: 'Space Mono', monospace;
+  font-size: .85rem; font-weight: 700;
+  color: var(--teal-dark); text-decoration: underline;
+  text-underline-offset: 3px; letter-spacing: .04em;
+}
+nav a:hover { color: var(--teal); }
+
+/* ── HERO ── */
+.hero {
+  background: var(--teal);
+  min-height: 340px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 3rem 2rem;
+}
+.hero-title {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  color: var(--cream);
+  letter-spacing: -.02em;
+  text-align: center;
+  position: relative; z-index: 1;
+  opacity: 0; animation: fadeUp .8s .1s forwards;
+}
+.hero-title span { color: var(--pink); }
+
+/* pixel-art dots background */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── ABOUT STRIP ── */
+.about-strip {
+  background: var(--pink);
+  padding: .6rem 2.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: .85rem;
+  color: var(--teal-dark);
+  letter-spacing: .08em;
+}
+
+/* ── ABOUT SECTION ── */
+.about-section {
+  max-width: 900px; margin: 3rem auto;
+  padding: 0 2rem;
+  display: flex; gap: 3rem; align-items: center;
+  opacity: 0; animation: fadeUp .8s .3s forwards;
+}
+.about-photo {
+  width: 160px; height: 160px; border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--pink-mid);
+  flex-shrink: 0;
+  background: var(--pink); /* fallback */
+}
+.about-photo-placeholder {
+  width: 160px; height: 160px; border-radius: 50%;
+  background: var(--pink);
+  border: 5px solid var(--pink-mid);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: .7rem; color: var(--teal-dark);
+  text-align: center; padding: 1rem;
+}
+.about-links { display: flex; flex-direction: column; gap: .8rem; margin-top: .5rem; }
+.about-link-btn {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); text-decoration: none;
+  font-size: 1.1rem; transition: background .2s, transform .2s;
+}
+.about-link-btn:hover { background: var(--teal-dark); transform: scale(1.1); }
+.about-intro h2 {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 2rem; color: var(--teal);
+  margin-bottom: .75rem;
+}
+.about-intro p { color: var(--text-muted); line-height: 1.7; margin-bottom: .75rem; font-size: .97rem; }
+.btn-primary {
+  display: inline-block; margin-top: .5rem;
+  background: var(--teal);
+  color: var(--white);
+  font-family: 'Space Mono', monospace;
+  font-size: .85rem; padding: .75rem 1.8rem;
+  border-radius: var(--radius); text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+.btn-primary:hover { background: var(--teal-dark); transform: translateY(-2px); }
+
+/* ── SECTION HEADINGS ── */
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: .7rem; letter-spacing: .2em;
+  color: var(--pink-mid); text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+.section-title {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 2rem; color: var(--teal-dark);
+  margin-bottom: 1.5rem;
+}
+
+/* ── PROJECTS ── */
+.projects-section { max-width: 1200px; margin: 0 auto 5rem; padding: 2rem 2rem 0; }
+
+.projects-header {
+  background: var(--teal);
+  text-align: center; padding: 2.5rem 1rem;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.projects-header h2 {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 2.2rem; color: var(--cream);
+  letter-spacing: .15em; text-transform: uppercase;
+}
+
+.category-title {
+  font-family: 'Space Mono', monospace;
+  font-size: .9rem; color: var(--cream);
+  padding: 1rem 2rem .5rem;
+  background: var(--teal);
+  border-top: 1px solid rgba(255,255,255,.1);
+  letter-spacing: .06em;
+}
+.category-title:first-of-type { border-top: 2px solid rgba(255,255,255,.15); }
+
+.projects-grid {
+  background: var(--teal);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 2rem 2rem;
+}
+.projects-grid:last-of-type { border-radius: 0 0 var(--radius) var(--radius); }
+
+/* Project Card */
+.project-card {
+  background: var(--cream);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform .25s, box-shadow .25s;
+  opacity: 0;
+  animation: fadeUp .5s forwards;
+}
+.project-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 16px 48px rgba(30,107,94,.28); }
+.project-card-img {
+  width: 100%; aspect-ratio: 16/10;
+  object-fit: cover;
+  background: var(--pink);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: .75rem; color: var(--teal-dark);
+  min-height: 140px;
+}
+.project-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.project-card-body { padding: .9rem 1rem .8rem; }
+.project-card-name {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 1.05rem; color: var(--teal-dark);
+  margin-bottom: .3rem;
+}
+.project-card-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+.tag {
+  background: var(--pink);
+  color: var(--teal-dark);
+  font-family: 'Space Mono', monospace;
+  font-size: .65rem; padding: .2rem .55rem;
+  border-radius: 999px; font-weight: 700;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(20,50,45,.75);
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.open { display: flex; animation: fadeIn .2s; }
+.modal {
+  background: var(--cream);
+  border-radius: var(--radius);
+  max-width: 780px; width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,.4);
+  animation: slideUp .3s ease;
+}
+.modal-hero {
+  background: var(--teal);
+  padding: 2rem 2rem 1.5rem;
+  position: relative;
+}
+.modal-hero h2 {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 2rem; color: var(--cream);
+}
+.modal-hero p { color: var(--pink); font-style: italic; font-size: .95rem; margin-top: .3rem; }
+.modal-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: var(--pink); color: var(--teal-dark);
+  border: none; width: 36px; height: 36px; border-radius: 50%;
+  font-size: 1.2rem; cursor: pointer; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.modal-close:hover { background: var(--pink-mid); }
+.modal-body { padding: 2rem; }
+.modal-desc { color: var(--text-muted); line-height: 1.75; margin-bottom: 1.5rem; font-size: .97rem; }
+
+.modal-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2rem; }
+.modal-link {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .6rem 1.2rem; border-radius: var(--radius);
+  font-family: 'Space Mono', monospace; font-size: .8rem;
+  font-weight: 700; text-decoration: none;
+  transition: transform .15s, opacity .2s;
+}
+.modal-link:hover { transform: translateY(-2px); opacity: .9; }
+.modal-link.yt  { background: #ff4444; color: #fff; }
+.modal-link.gh  { background: #1a1a2e; color: #fff; }
+.modal-link.play{ background: var(--teal); color: #fff; }
+
+.modal-section-title {
+  font-family: 'Space Mono', monospace;
+  font-size: .75rem; letter-spacing: .18em;
+  color: var(--pink-mid); text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+/* Media grid inside modal */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem; margin-bottom: 2rem;
+}
+.media-item { border-radius: 10px; overflow: hidden; background: var(--pink); aspect-ratio: 16/9; }
+.media-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.media-item iframe { width: 100%; height: 100%; border: none; display: block; }
+.media-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-size: .7rem;
+  color: var(--teal-dark); text-align: center; padding: 1rem;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--teal-dark);
+  color: var(--pink);
+  text-align: center;
+  padding: 2.5rem 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: .8rem;
+  letter-spacing: .06em;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* staggered card delay */
+.project-card:nth-child(1) { animation-delay: .05s; }
+.project-card:nth-child(2) { animation-delay: .12s; }
+.project-card:nth-child(3) { animation-delay: .19s; }
+.project-card:nth-child(4) { animation-delay: .26s; }
+.project-card:nth-child(5) { animation-delay: .33s; }
+.project-card:nth-child(6) { animation-delay: .40s; }
+.project-card:nth-child(7) { animation-delay: .47s; }
+.project-card:nth-child(8) { animation-delay: .54s; }
+
+@media (max-width: 600px) {
+  .about-section { flex-direction: column; text-align: center; }
+  .about-links { flex-direction: row; justify-content: center; }
+  .hero-title { font-size: 3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     ██████╗  █████╗ ████████╗ █████╗
+     ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+     ██║  ██║███████║   ██║   ███████║
+     ██║  ██║██╔══██║   ██║   ██╔══██║
+     ██████╔╝██║  ██║   ██║   ██║  ██║
+     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+
+  ✏️ EDIT YOUR PORTFOLIO HERE — change anything inside the
+     PORTFOLIO_DATA object below. Each project has:
+     - name, subtitle, category, tags[], coverUrl, description
+     - youtubeUrl, githubUrl, playstoreUrl (set "" to hide button)
+     - media[] — each item is { type:"image"|"youtube", src:"URL" }
+============================================================ -->
+<script>
+const OWNER = {
+  name:       "Chirag D Patidar",               // ← your name
+  title:      "Game Developer",         // ← your title strip
+  bio1:       "I'm a game designer and developer with a passion for bringing imaginative concepts to life through games. I've dedicated myself to mastering the art and science of game creation.",
+  bio2:       "My expertise spans both the technical coding aspects and the creative design elements of game development.",
+  photoUrl:   "images/chigs.jpeg",                        // ← paste a URL to your photo, or leave "" for placeholder
+  resumeUrl:  "file:///C:/Users/admin/Downloads/ChiragCV.pdf",                       // ← link to your resume P
+  linkedinUrl:"https://www.linkedin.com/in/chirag-d-patidar-106137374?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+  githubUrl:  "https://github.com/chirag-pat",
+  emailUrl:   "",
+  behanceUrl: "",
+};
+
+const PROJECTS = [
+  // ─────────────────────────────────────────────
+  // CATEGORY 1: Unity Engine / Extensive Game Projects
+  // ─────────────────────────────────────────────
+  {
+    category: "Unity Engine / Extensive Game Projects",
+    name: "Pilot",
+    subtitle: "Precision platformer",
+    tags: ["Unity", "C#", "3D"],
+    coverUrl: "images/pilot.png",           // ← paste image URL here
+    description: "Pilot is a single player 3D game developed in unity where player has to navigate through obstacles and reach the landing pad or destination with levels of increasing difficulty. Space key to fly and AD to control the rocket.",
+    youtubeUrl:    "",      // ← YouTube video/playlist URL
+    githubUrl:     "https://github.com/chirag-pat/unity-game--Pilot.git",      // ← GitHub repo URL
+    playstoreUrl:  "https://chirag-pat.itch.io/911-pilot?secret=olJLbSooJQXGuDkvoREk4rNRc",      // ← Google Play or itch.io URL
+    media: [
+            { type: "image", src: "images/lvl.png" },
+            { type: "image", src: "images/twin.png" },
+      // { type: "image",   src: "https://..." },
+      // { type: "youtube", src: "https://www.youtube.com/embed/VIDEO_ID" },
+    ]
+  },
+  {
+    category: "Unity Engine / Extensive Game Projects",
+    name: "",
+    subtitle: "",
+    tags: ["Unity", "C#", "3D", "ui"],
+    coverUrl: "",
+    description: "",
+    youtubeUrl:   "",
+    githubUrl:    "",
+    playstoreUrl: "",
+    media: []
+  },
+  {
+    category: "Unity Engine / Extensive Game Projects",
+    name: "",
+    subtitle: "",
+    tags: ["Unity", "C#", "io-game"],
+    coverUrl: "",
+    description: "",
+    youtubeUrl:   "",
+    githubUrl:    "",
+    playstoreUrl: "",
+    media: []
+  },
+  {
+    category: "Unity Engine / Extensive Game Projects",
+    name: "",
+    subtitle: "",
+    tags: ["Unity", "C#", "Horror", "Stealth"],
+    coverUrl: "",
+    description: "",
+    youtubeUrl:   "",
+    githubUrl:    "",
+    playstoreUrl: "",
+    media: []
+  },
+  {
+    category: "Unity Engine / Extensive Game Projects",
+    name: "",
+    subtitle: "",
+    tags: ["Unity", "C#", "Narrative"],
+    coverUrl: "",
+    description: "",
+    youtubeUrl:   "",
+    githubUrl:    "",
+    playstoreUrl: "",
+    media: []
+  },
+  {
+    category: "Unity Engine / Extensive Game Projects",
+    name: "",
+    subtitle: "",
+    tags: ["Unity", "C#", "Casual", "Android"],
+    coverUrl: "",
+    description: "",
+    youtubeUrl:   "",
+    githubUrl:    "",
+    playstoreUrl: "",
+    media: []
+  },
+
+  // ─────────────────────────────────────────────
+  // CATEGORY 2: Unity Engine / Freelance Work
+  // ─────────────────────────────────────────────
+  {
+    category: "Unity Engine / Freelance Work",
+    name: "Chain Reaction",
+    subtitle: "Arcade kids",
+    tags: ["Unity", "C#", "Freelance", "Arcade"],
+    coverUrl: "images/chain.png",
+    description: "I recently built a Chain Reaction game prototype in Unity as part of my game development journey.This project helped me understand how seemingly simple games require a lot of logic behind the scenes.While building this, I learned how to:-How UI textMeshPro works and UI Panel that are usually used to show Score in-game and display buttons as well in mobile games.Tracking the game objects velocity and deciding the game events based on that.Implement game logic and object interactions. Handle player input and game state changes",
+                                                                                                                                                 
+    youtubeUrl:   "https://youtu.be/nPhe-Mi2Hc8",
+    githubUrl:    "",
+    playstoreUrl: "",
+    media: [{ type: "image", src: "images/ui.png" },]
+  },
+  {
+    category: "Unity Engine / Freelance Work",
+    name: "",
+    subtitle: "",
+    tags: ["Unity", "C#", "Freelance", "Puzzle"],
+    coverUrl: "",
+    description: "",
+    youtubeUrl:   "",
+    githubUrl:    "",
+    playstoreUrl: "",
+    media: []
+  },
+  // ─────────────────────────────────────────────
+  // ✏️ ADD MORE PROJECTS: Copy the block above and paste it here
+  // ─────────────────────────────────────────────
+];
+</script>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  HTML STRUCTURE — you rarely need to edit   -->
+<!-- ════════════════════════════════════════════ -->
+
+<nav id="nav">
+  <a href="#about">About</a>
+  <a href="#projects">Projects</a>
+</nav>
+
+<header class="hero">
+  <h1 class="hero-title" id="hero-name">PORT<span>FOLIO</span></h1>
+</header>
+
+<div class="about-strip" id="title-strip">Game Developer</div>
+
+<section class="about-section" id="about">
+  <div>
+    <div class="about-photo-placeholder" id="about-photo-el">Your photo here</div>
+    <div class="about-links" id="about-links"></div>
+  </div>
+  <div class="about-intro" id="about-intro">
+    <h2>Hello and welcome! I'm <span id="about-name">…</span>.</h2>
+    <p id="about-bio1"></p>
+    <p id="about-bio2"></p>
+    <a href="#" id="resume-btn" class="btn-primary">Download my resume</a>
+  </div>
+</section>
+
+<section class="projects-section" id="projects">
+  <div class="projects-header"><h2>P R O J E C T S</h2></div>
+  <div id="projects-container"></div>
+</section>
+
+<footer>
+  <p id="footer-text">© 2026 Made by Chirag</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-hero" id="modal-hero">
+      <button class="modal-close" id="modal-close">✕</button>
+      <h2 id="modal-title"></h2>
+      <p id="modal-subtitle"></p>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-links" id="modal-links"></div>
+      <div id="modal-media-section" style="display:none">
+        <p class="modal-section-title">Screenshots &amp; Videos</p>
+        <div class="media-grid" id="modal-media-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Render About ─────────────────────────────────
+document.getElementById('about-name').textContent      = OWNER.name;
+document.getElementById('about-bio1').textContent      = OWNER.bio1;
+document.getElementById('about-bio2').textContent      = OWNER.bio2;
+document.getElementById('title-strip').textContent     = OWNER.title;
+document.getElementById('footer-text').textContent     = `© ${new Date().getFullYear()} · Made by ${OWNER.name}`;
+document.getElementById('resume-btn').href             = OWNER.resumeUrl;
+
+if (OWNER.photoUrl) {
+  const img = document.createElement('img');
+  img.src = OWNER.photoUrl; img.alt = OWNER.name;
+  img.className = 'about-photo';
+  document.getElementById('about-photo-el').replaceWith(img);
+}
+
+const LINKS = [
+  { url: OWNER.linkedinUrl, icon: '&#xFE0F;in', label: 'LinkedIn' },
+  { url: OWNER.githubUrl,   icon: '⌥',          label: 'GitHub'  },
+  { url: OWNER.emailUrl,    icon: '✉',            label: 'Email'   },
+  { url: OWNER.behanceUrl,  icon: 'Bé',           label: 'Behance' },
+];
+const linksEl = document.getElementById('about-links');
+LINKS.forEach(l => {
+  if (!l.url || l.url === '#') return;
+  const a = document.createElement('a');
+  a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+  a.className = 'about-link-btn'; a.title = l.label;
+  a.innerHTML = l.icon;
+  linksEl.appendChild(a);
+});
+
+// ── Render Projects ───────────────────────────────
+const container = document.getElementById('projects-container');
+const categories = [...new Set(PROJECTS.map(p => p.category))];
+
+categories.forEach(cat => {
+  const catTitle = document.createElement('div');
+  catTitle.className = 'category-title';
+  catTitle.textContent = cat + ':';
+  container.appendChild(catTitle);
+
+  const grid = document.createElement('div');
+  grid.className = 'projects-grid';
+
+  PROJECTS.filter(p => p.category === cat).forEach((proj, i) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.innerHTML = `
+      <div class="project-card-img">
+        ${proj.coverUrl
+          ? `<img src="${proj.coverUrl}" alt="${proj.name}" />`
+          : `<span style="padding:1rem;text-align:center;font-family:'Space Mono',monospace;font-size:.75rem;color:var(--teal)">🎮 ${proj.name}</span>`}
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-name">${proj.name}</div>
+        <div class="project-card-tags">${proj.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </div>`;
+    card.addEventListener('click', () => openModal(proj));
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+});
+
+// ── Modal ─────────────────────────────────────────
+const overlay  = document.getElementById('modal-overlay');
+const modalEl  = document.getElementById('modal');
+const closeBtn = document.getElementById('modal-close');
+
+function openModal(proj) {
+  document.getElementById('modal-title').textContent    = proj.name;
+  document.getElementById('modal-subtitle').textContent = proj.subtitle || '';
+  document.getElementById('modal-desc').textContent     = proj.description || '';
+
+  // links
+  const linksDiv = document.getElementById('modal-links');
+  linksDiv.innerHTML = '';
+  if (proj.youtubeUrl)    linksDiv.appendChild(makeLink('▶ YouTube Showcase', proj.youtubeUrl, 'yt'));
+  if (proj.githubUrl)     linksDiv.appendChild(makeLink('⌥ GitHub Repo',      proj.githubUrl, 'gh'));
+  if (proj.playstoreUrl)  linksDiv.appendChild(makeLink('⬇ Play Store',       proj.playstoreUrl, 'play'));
+
+  // media
+  const mediaSection = document.getElementById('modal-media-section');
+  const mediaGrid    = document.getElementById('modal-media-grid');
+  mediaGrid.innerHTML = '';
+  if (proj.media && proj.media.length > 0) {
+    mediaSection.style.display = 'block';
+    proj.media.forEach(m => {
+      const item = document.createElement('div');
+      item.className = 'media-item';
+      if (m.type === 'image') {
+        item.innerHTML = `<img src="${m.src}" alt="screenshot" />`;
+      } else if (m.type === 'youtube') {
+        item.innerHTML = `<iframe src="${m.src}" allowfullscreen></iframe>`;
+      } else {
+        item.innerHTML = `<div class="media-placeholder">📷 Media</div>`;
+      }
+      mediaGrid.appendChild(item);
+    });
+  } else {
+    mediaSection.style.display = 'none';
+  }
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function makeLink(label, url, cls) {
+  const a = document.createElement('a');
+  a.href = url; a.target = '_blank'; a.rel = 'noopener';
+  a.className = `modal-link ${cls}`;
+  a.textContent = label;
+  return a;
+}
+
+closeBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function closeModal() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+</body>
+</html>
